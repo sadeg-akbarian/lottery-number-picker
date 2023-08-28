@@ -5,6 +5,8 @@
 }
 
 :root {
+  --page-background-color: rgb(250, 128, 114);
+  --number-background-color: rgb(255, 255, 255);
 }
 
 html {
@@ -17,5 +19,37 @@ body {
   margin: 0;
   height: 100vh;
   background-color: var(--page-background-color);
-  color: var(--page-text-color);
+}
+
+header {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1,
+.buttonArea {
+  margin: 3vh;
+}
+
+button {
+  height: 2.5rem;
+  font-size: 1.2rem;
+}
+
+main {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main > p {
+  font-size: 3.5rem;
+  background-color: var(--number-background-color);
+  border: 0.05em solid black;
+  padding-inline: 0.1em;
+  margin: 0.3em;
 }

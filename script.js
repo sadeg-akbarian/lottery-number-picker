@@ -4,15 +4,6 @@ const numberArea = document.querySelector("main");
 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-const updateState = {
-  contentLocalStorage: null,
-  isPickButtonDisabled: null,
-  isResetButtonDisabled: null,
-  theInnerHTML: null,
-};
-
-// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 function initialState() {
   localStorage.clear();
   numberArea.innerHTML = "";
@@ -38,12 +29,6 @@ function renderNumbers() {
     newParagraph.innerText = element;
     numberArea.appendChild(newParagraph);
   });
-  updateState.contentLocalStorage = storedNumberCollection;
-  updateState.isPickButtonDisabled = pickButton.disabled;
-  updateState.isResetButtonDisabled = resetButton.disabled;
-  updateState.theInnerHTML = numberArea.innerHTML;
-  localStorage.setItem("updateState", JSON.stringify(updateState));
-  console.log(localStorage.updateState);
 }
 
 renderNumbers();

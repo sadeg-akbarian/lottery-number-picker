@@ -18,31 +18,22 @@ function initialState() {
   numberArea.innerHTML = "";
   pickButton.disabled = false;
   resetButton.setAttribute("disabled", "");
+  localStorage.setItem("numberCollection", JSON.stringify([]));
 }
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-function displayNumbers() {
+function renderNumbers() {
   numberArea.innerHTML = "";
-  let storedNumberCollection = JSON.parse(
+  const storedNumberCollection = JSON.parse(
     localStorage.getItem("numberCollection")
   );
-  if (storedNumberCollection === null) {
-    storedNumberCollection = [];
-    localStorage.setItem(
-      "numberCollection",
-      JSON.stringify(storedNumberCollection)
-    );
-  }
   if (storedNumberCollection.length === 6) {
     pickButton.disabled = "true";
     resetButton.removeAttribute("disabled");
   }
   const cloneNumbers = structuredClone(storedNumberCollection);
-  const sortedCollection = cloneNumbers.sort(function (a, b) {
-    return a - b;
-  });
-  sortedCollection.forEach((element) => {
+  cloneNumbers.forEach((element) => {
     const newParagraph = document.createElement("p");
     newParagraph.innerText = element;
     numberArea.appendChild(newParagraph);
@@ -55,40 +46,37 @@ function displayNumbers() {
   console.log(localStorage.updateState);
 }
 
-displayNumbers();
+renderNumbers();
 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-function pickNumbers() {
+function updateNumbers() {
   const storedNumberCollection = JSON.parse(
     localStorage.getItem("numberCollection")
   );
-  let randomNum = Math.floor(Math.random() * 49) + 1;
-  if (storedNumberCollection.includes(randomNum) === true) {
-    while (storedNumberCollection.includes(randomNum) === true) {
-      let newNumber = Math.floor(Math.random() * 49) + 1;
-      if (storedNumberCollection.includes(newNumber) === false) {
-        randomNum = newNumber;
-        break;
-      }
+  let randomNum;
+  function findNumber() {
+    randomNum = Math.floor(Math.random() * 49) + 1;
+    if (storedNumberCollection.includes(randomNum)) {
+      findNumber();
     }
   }
-  if (storedNumberCollection.length < 6) {
-    storedNumberCollection.push(randomNum);
-    localStorage.setItem(
-      "numberCollection",
-      JSON.stringify(storedNumberCollection)
-    );
-  }
-
-  displayNumbers();
+  findNumber();
+  storedNumberCollection.push(randomNum);
+  const sortedCollection = storedNumberCollection.sort(function (a, b) {
+    return a - b;
+  });
+  localStorage.setItem("numberCollection", JSON.stringify(sortedCollection));
 }
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-pickButton.addEventListener("click", pickNumbers);
+pickButton.addEventListener("click", function () {
+  updateNumbers();
+  renderNumbers();
+});
 
 resetButton.addEventListener("click", function () {
   initialState();
-  displayNumbers();
+  renderNumbers();
 });
